@@ -191,16 +191,3 @@ class Pawn(ChessPiece):
             else:
                 possible_moves.append((file,rank-1))
         return possible_moves
-#%%
-king = King("White",(2,3))
-queen = Queen("Black",(5,2))
-rook = Rook("White",(0,5))
-bishop = Bishop("White",(4,3))
-knight = Knight("White",(0,0))
-wpawn = Pawn("White",(2,6))
-bpawn = Pawn("Black",(2,6))
-#%%
-x = wpawn.get_possible_moves()
-print(x)
-x = bpawn.get_possible_moves()
-print(x)
