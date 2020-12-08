@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Dec  4 12:38:25 2020
-
-@author: nickk
-
 Chess!  Let's start with a program that defines what pieces are.
 """
 ### A note about location: location will be a tuple defined as (file,rank).
@@ -191,3 +187,74 @@ class Pawn(ChessPiece):
             else:
                 possible_moves.append((file,rank-1))
         return possible_moves
+    
+    
+class GameState:
+    def __init__(self,start = True):
+        self.turn = "White"
+        #self.check = self.getCheck()
+        self.pieces = [[None]*8 for _ in range(8)]
+        if start == True:
+            ### start is asking "Do you want the position at the
+            ### start of a standard chess game?  This gives you
+            ### that.
+            self.pieces[0][0] = Rook("White",(0,0))
+            self.pieces[1][0] = Knight("White",(1,0))
+            self.pieces[2][0] = Bishop("White",(2,0))
+            self.pieces[3][0] = Queen("White",(3,0))
+            self.pieces[4][0] = King("White",(4,0))
+            self.pieces[5][0] = Bishop("White",(5,0))
+            self.pieces[6][0] = Knight("White",(6,0))
+            self.pieces[7][0] = Rook("White",(7,0))
+            self.pieces[0][7] = Rook("Black",(0,7))
+            self.pieces[1][7] = Knight("Black",(1,7))
+            self.pieces[2][7] = Bishop("Black",(2,7))
+            self.pieces[3][7] = Queen("Black",(3,7))
+            self.pieces[4][7] = King("Black",(4,7))
+            self.pieces[5][7] = Bishop("Black",(5,7))
+            self.pieces[6][7] = Knight("Black",(6,7))
+            self.pieces[7][7] = Rook("Black",(7,7))
+            for file in range(8):
+                self.pieces[file][1] = Pawn("White",(file,1))
+                self.pieces[file][6] = Pawn("Black",(file,6))
+
+    def remove_piece(self,file,rank):
+        self.pieces[file][rank] = None
+        return self
+
+    def add_piece(self,file,rank,piece_type,color):
+        ### Figure out a better way to do this at some point.
+        ### This is fine for this problem but doesn't scale well.
+        if piece_type == "K":
+            piece = King(color,(file,rank))
+        elif piece_type == "Q":
+            piece = Queen(color,(file,rank))
+        elif piece_type == "R":
+            piece = Rook(color,(file,rank))
+        elif piece_type == "B":
+            piece = Bishop(color,(file,rank))
+        elif piece_type == "N":
+            piece = Knight(color,(file,rank))
+        elif piece_type == "P":
+            piece = Pawn(color,(file,rank))
+        self.pieces[file][rank] = piece
+        return self
+
+    def switch_turn(self):
+        if self.turn == "White":
+            self.turn = "Black"
+        elif self.turn == "Black":
+            self.turn = "White"
+        return self
+
+    def display_board(self):
+        output = [[None]*8 for _ in range(8)]
+        for i in range(8):
+            for j in range(8):
+                if self.pieces[i][j] == None:
+                    pass
+                else:
+                    output[i][j] = self.pieces[i][j].piece
+        print(output)
+        return self
+#%%
